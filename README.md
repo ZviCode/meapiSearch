@@ -29,9 +29,12 @@ Line 26 = You can change to another port instead of 12345
 Do not make any manual changes to the file
 
 
-Credit and sources
+Credit and sources:
+
 https://meapi.readthedocs.io/en/latest/index.html
+
 https://github.com/david-lev
 
 https://flask.palletsprojects.com/en/2.2.x/
+
 https://www.docker.com/
