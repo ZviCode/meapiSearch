@@ -6,11 +6,9 @@ ENV FLASK_APP=app.py
 
 ENV FLASK_RUN_HOST=12345
 
-COPY requirements.txt requirements.txt
+COPY requirements.txt /tmp/requirements.txt
 
-RUN pip install -r requirements.txt
-
-COPY config.json config.json
+RUN pip install -r /tmp/requirements.txt
 
 COPY app.py app.py
 
