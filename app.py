@@ -1,25 +1,49 @@
+import json
+import http.client
 import re
 from meapi import Me
 from flask import Flask, request
-from flask import request
 
 me = Me(phone_number="972++++++")
 
 app = Flask(__name__)
 
-@app.route('/', methods=['GET','POST'])
+def get_nikud(text: str) -> str:
+    conn = http.client.HTTPSConnection("nakdan-5-1.loadbalancer.dicta.org.il")
+    payload = json.dumps({
+        "data": text,
+        "genre": "modern"
+    })
+    headers = {
+        'Content-Type': 'application/json'
+    }
+    conn.request("POST", "/api", payload, headers)
+    res = conn.getresponse()
+    data = json.loads(res.read().decode("utf-8"))
+    words = map(lambda w: w['options'][0] if len(w['options']) > 0 else w['word'], data)
+    return "".join(words)
+
+
+@app.route('/', methods=['GET', 'POST'])
 def parse_request():
-    try:
-        phone = request.args.getlist('phone')
-        me_search  = me.phone_search( re.sub( "^0" , "972" , phone[0] ) )
-        try:
-            print (me_search)
-            return me_search
-        except:
-            return "error request me"
-    except:
-        return "error global , I get the value phone"
-    
+    phone = request.args.get('phone', None)
+    if not phone:
+        return "error: phone is required", 400
+    phone_number = re.findall(r'[\d]+', phone.replace('-', ''))
+    if len(phone_number) != 1:
+        return "error: phone is invalid", 400
+    phone_fixed = re.sub("^0", "972", phone_number[0])
+    me_search_result = me.phone_search(phone_fixed)
+    nikud = request.args.get('nikud', False)
+    if not nikud:
+        return me_search_result
+    else:
+        name = me_search_result['contact'].get('name')
+        menukad_name = get_nikud(name)
+        return {
+            **me_search_result,
+            'menukad_name': menukad_name
+        }
 
 
 if __name__ == '__main__':
