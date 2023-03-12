@@ -1,25 +1,21 @@
 import re
 from meapi import Me
 from flask import Flask, request
-from flask import request
 
 me = Me(phone_number="972++++++")
 
 app = Flask(__name__)
 
-@app.route('/', methods=['GET','POST'])
+@app.route('/', methods=['GET', 'POST'])
 def parse_request():
-    try:
-        phone = request.args.getlist('phone')
-        me_search  = me.phone_search( re.sub( "^0" , "972" , phone[0] ) )
-        try:
-            print (me_search)
-            return me_search
-        except:
-            return "error request me"
-    except:
-        return "error global , I get the value phone"
-    
+    phone = request.args.get('phone', None)
+    if not phone:
+        return "error: phone is required", 400
+    phone_number = re.findall(r'[\d]+', phone.replace('-', ''))
+    if len(phone_number) != 1:
+        return "error: phone is invalid", 400
+    phone_fixed = re.sub("^0", "972", phone_number[0])
+    return me.phone_search(phone_fixed)
 
 
 if __name__ == '__main__':
