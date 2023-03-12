@@ -4,7 +4,7 @@ import re
 from meapi import Me
 from flask import Flask, request
 
-me = Me(phone_number="972++++++")
+me = Me(phone_number="972555646217")
 
 app = Flask(__name__)
 
@@ -36,7 +36,10 @@ def parse_request():
     me_search_result = me.phone_search(phone_fixed)
     nikud = request.args.get('nikud', False)
     if not nikud:
-        return me_search_result
+        print(me_search_result)
+        print(type(me_search_result))
+        return me_search_result.as_dict()
+   
     else:
         name = me_search_result['contact'].get('name')
         menukad_name = get_nikud(name)
