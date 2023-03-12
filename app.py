@@ -4,7 +4,7 @@ import re
 from meapi import Me
 from flask import Flask, request
 
-me = Me(phone_number="972555646217")
+me = Me(phone_number="972********")
 
 app = Flask(__name__)
 
@@ -37,7 +37,6 @@ def parse_request():
     nikud = request.args.get('nikud', False)
     if not nikud:
         print(me_search_result)
-        print(type(me_search_result))
         return me_search_result.as_dict()
    
     else:
