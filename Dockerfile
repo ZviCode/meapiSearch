@@ -10,7 +10,7 @@ COPY requirements.txt requirements.txt
 
 RUN pip install -r requirements.txt
 
-COPY config.json config.json
+COPY meapi_credentials.json meapi_credentials.json
 
 COPY app.py app.py
 
