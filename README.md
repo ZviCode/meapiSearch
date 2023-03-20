@@ -1,32 +1,34 @@
 # meapiSearch
-Searching people by phone number using the ME API
+Search people by phone number using the ME API
 
 With God's help
 
 This project aims to create an HTTP server that returns the details ME has about a phone number sent to the server
 
-A few things to do before running it in Docker:
+A few things to do before running it on Docker:
 
-######The verification phase#######
-
-1) Edit the cell phone number through which you will perform the search in the app.py file in line 6
+######Verification step##### 
+1)In line 8 put this the first time you run the script
+me = Me(interactive_mode=True)
 2)Run python3 app.py
-3)Perform the verification as it says there (via WhatsApp/Telegram)
-4)If you passed the authentication successfully, the login token will be written to you in the config.json file
-5)Now you can run it properly with an HTTP server
+Select an authentication method and authenticate the session
+3)If you passed the authentication successfully, the login token will be written to you in the meapi_credentials.json file
+4)Change line 8 to
+me = Me(phone_number=972000000)
+When instead of 972000000 write down the number you verified earlier
+5)Now you can upload the docker file
 
 
-Things that need (or can be changed):
+Things you need (or can change):
 
-1) in the Dockerfile:
-Line 3 = Change to the location of the file
-Line 7 and line 19= You can change to another port instead of 12345
+1)In Dockerfile:
+Line 7 and line 13 = you can go to another exit instead of 12345
 
-2) in the app.py:
-Line 6 = You must go through the verification phase
-Line 26 = You can change to another port instead of 12345
-3) in the confing.json:
-Do not make any manual changes to the file
+2)In app.py:
+Line 8 = You must pass the verification step
+Line 51 = You can switch to another port instead of 12345
+3)In the meapi_credentials.json file:
+Do not make manual changes to the file
 
 
 Credit and sources:
@@ -34,7 +36,3 @@ Credit and sources:
 https://meapi.readthedocs.io/en/latest/index.html
 
 https://github.com/david-lev
-
-https://flask.palletsprojects.com/en/2.2.x/
-
-https://www.docker.com/

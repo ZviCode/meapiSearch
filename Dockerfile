@@ -6,15 +6,9 @@ ENV FLASK_APP=app.py
 
 ENV FLASK_RUN_HOST=12345
 
-COPY requirements.txt requirements.txt
+COPY ./ ./
 
 RUN pip install -r requirements.txt
-
-COPY meapi_credentials.json meapi_credentials.json
-
-COPY app.py app.py
-
-COPY . .
 
 EXPOSE 12345
 
